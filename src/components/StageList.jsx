@@ -1,14 +1,15 @@
 import { STAGES } from "../data/stages";
 
-export default function StageList({ phaseId, checkState, onSelectStage }) {
-  const stages = STAGES.filter((s) => s.phase === phaseId);
+export default function StageList({ phaseId, checkState, onSelectStage, stages, keyPrefix = "stage" }) {
+  const st = stages || STAGES;
+  const phaseStages = st.filter((s) => s.phase === phaseId);
 
   return (
     <div className="space-y-3">
-      {stages.map((stage) => {
+      {phaseStages.map((stage) => {
         const total = stage.checklist.length;
         const done = stage.checklist.filter(
-          (_, i) => checkState[`stage${String(stage.id).padStart(2, "0")}-${i}`]
+          (_, i) => checkState[`${keyPrefix}${String(stage.id).padStart(2, "0")}-${i}`]
         ).length;
         const pct = total > 0 ? Math.round((done / total) * 100) : 0;
         const isComplete = done === total;

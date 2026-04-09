@@ -1,17 +1,20 @@
 import { PHASES } from "../data/phases";
 import { STAGES } from "../data/stages";
 
-export default function PhaseNav({ activePhase, onSelectPhase, checkState }) {
+export default function PhaseNav({ activePhase, onSelectPhase, checkState, phases, stages, keyPrefix = "stage" }) {
+  const ph = phases || PHASES;
+  const st = stages || STAGES;
+
   return (
     <div className="flex gap-2 overflow-x-auto pb-2">
-      {PHASES.map((phase) => {
-        const stages = STAGES.filter((s) => s.phase === phase.id);
-        const totalChecks = stages.reduce((sum, s) => sum + s.checklist.length, 0);
-        const doneChecks = stages.reduce(
+      {ph.map((phase) => {
+        const phaseStages = st.filter((s) => s.phase === phase.id);
+        const totalChecks = phaseStages.reduce((sum, s) => sum + s.checklist.length, 0);
+        const doneChecks = phaseStages.reduce(
           (sum, s) =>
             sum +
             s.checklist.filter(
-              (_, i) => checkState[`stage${String(s.id).padStart(2, "0")}-${i}`]
+              (_, i) => checkState[`${keyPrefix}${String(s.id).padStart(2, "0")}-${i}`]
             ).length,
           0
         );

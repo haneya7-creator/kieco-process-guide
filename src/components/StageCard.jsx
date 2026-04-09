@@ -1,9 +1,9 @@
 import ChecklistItem from "./ChecklistItem";
 import TipCard from "./TipCard";
 
-export default function StageCard({ stage, checkState, onCheck, onPrev, onNext, hasPrev, hasNext }) {
+export default function StageCard({ stage, checkState, onCheck, onPrev, onNext, hasPrev, hasNext, keyPrefix = "stage" }) {
   const total = stage.checklist.length;
-  const done = stage.checklist.filter((_, i) => checkState[`stage${String(stage.id).padStart(2, "0")}-${i}`]).length;
+  const done = stage.checklist.filter((_, i) => checkState[`${keyPrefix}${String(stage.id).padStart(2, "0")}-${i}`]).length;
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
 
   return (
@@ -46,7 +46,7 @@ export default function StageCard({ stage, checkState, onCheck, onPrev, onNext, 
               key={i}
               text={item}
               index={i}
-              checked={!!checkState[`stage${String(stage.id).padStart(2, "0")}-${i}`]}
+              checked={!!checkState[`${keyPrefix}${String(stage.id).padStart(2, "0")}-${i}`]}
               onChange={() => onCheck(stage.id, i)}
             />
           ))}
